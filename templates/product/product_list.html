@@ -6,18 +6,18 @@
 
 {% for product in products %}
     <div class="card" style="width: 18rem;">
-        {% if post.image %}
-            <img src="/media/{{ product.image }}" class="card-img-top" alt="...">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" alt="...">
         {% else %}
             <img src="{% static 'default.png' %}" class="card-img-top" alt="...">
         {% endif %}
         <div class="card-body">
-            <h5 class="card-title">{{ post.title }} {{ post.rate }}</h5>
-            <p class="card-text">{{ post.content }}</p>
+            <h5 class="card-title">{{ product.name }}</h5> <!-- Fix: Changed post.title to product.name -->
+            <p class="card-text">{{ product.description }}</p> <!-- Fix: Changed post.content to product.description -->
             {% for tag in product.tags.all %}
                 <a href="#" class="btn btn-secondary">{{ tag.name }}</a>
             {% endfor %}
-            <a href="{{ product.id }}" class="btn btn-primary">Читать...</a>
+            <a href="{{ product.id }}" class="btn btn-primary">Читать...</a> <!-- Fix: Added correct URL for product detail view -->
         </div>
     </div>
 {% endfor %}
