@@ -19,7 +19,7 @@ class Product(models.Model):
     )
     tags = models.ManyToManyField(
         Tag,
-        related_name="posts",
+        related_name="products",
         blank=True
     )
     description = models.TextField()
