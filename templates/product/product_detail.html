@@ -3,7 +3,9 @@
 
 {% block content %}
 <h1>Products</h1>
-
+<p>
+    Author: {{ product.user }}
+</p>
 </h1>{{product.name}}</h1>
 <p> Description :{{ product.description }}</p>
 <p> {{ product.created_at }} </p>
@@ -14,6 +16,7 @@
 {%endfor%}
 <h1>Reviews</h1>
 {%for review in product.reviews.all%}
+<p>Author: {{ review.user }}</p>
 <p>{{review.text}}</p>
 <p> Published on :{{ review.created_at }}</p>
 {%endfor%}

@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
 from post.models import Product, Category
-from post.forms import ProductForm,ReviewForm
-
+from post.forms import ProductForm, ReviewForm
+from django.contrib.auth.decorators import login_required
 
 def hello_view(request):
     if request.method == 'GET':
@@ -22,15 +22,16 @@ def goodbye_view(request):
 
 
 def main_view(request):
+    user=request.user
     if request.method == 'GET':
-        return render(request, 'main.html')
+        return render(request, 'main.html', {'user': user})
 
 
 def product_list_view(request):
     products = Product.objects.all()
     return render(request, 'product/product_list.html', {'products': products})
 
-
+@login_required(login_url='/auth/login')
 def product_detail_view(request, product_id):
     try:
         product = Product.objects.get(id=product_id)
@@ -47,7 +48,7 @@ def category_view(request, category_id):
     products_in_category = Product.objects.filter(category=category)
     return render(request, 'category.html', {'category': category, 'products': products_in_category})
 
-
+@login_required(login_url='/auth/login')
 def product_create_view(request):
     if request.method == 'GET':
         form = ProductForm()
@@ -70,12 +71,14 @@ def product_create_view(request):
             description=description,
             image=image,
             price=price,
+            user=request.user
         )
 
         product.tags.set(tags)
         product.category = category
         product.save()
         return redirect('product_list')
+
 def add_review_view(request,product_id):
     try:
         product = Product.objects.get(id=product_id)
@@ -90,6 +93,7 @@ def add_review_view(request,product_id):
         if form.is_valid():
             review = form.save(commit=False)
             review.product = product
+            review.user = request.user
             review.save()
             return redirect('product_detail', product_id=product.id)
         else:

@@ -3,8 +3,8 @@
 
 {% block content %}
 <h1>Products</h1>
-
 {% for product in products %}
+    {% if product.user != request.user %}
     <div class="card" style="width: 18rem;">
 
         {% if product.image %}
@@ -15,12 +15,13 @@
         <div class="card-body">
             <h5 class="card-title">{{ product.name }}</h5> <!-- Fix: Changed post.title to product.name -->
             <p class="card-text">{{ product.description }}</p> <!-- Fix: Changed post.content to product.description -->
+             <p class="card-text">Автор: {{ product.user }}</p>
             {% for tag in product.tags.all %}
                 <a href="#" class="btn btn-secondary">{{ tag.name }}</a>
             {% endfor %}
             <a href="{{ product.id }}" class="btn btn-primary">Читать...</a> <!-- Fix: Added correct URL for product detail view -->
         </div>
     </div>
+    {% endif %}
 {% endfor %}
-
 {% endblock %}

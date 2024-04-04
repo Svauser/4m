@@ -6,7 +6,7 @@ from post.models import Product,Review
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = "__all__"
+        exclude = ['user', 'created_at', 'updated_at']
         widgets = {
             'name': forms.TextInput(
                 attrs={

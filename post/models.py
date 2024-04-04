@@ -1,4 +1,5 @@
 from django.db import models
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
@@ -10,6 +11,13 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 class Product(models.Model):
+    user = models.ForeignKey(
+        'user.Users',
+        on_delete=models.CASCADE,
+        related_name='products',
+        null=True,
+        blank=False
+    )
     name = models.CharField(max_length=100)
     category = models.ForeignKey(
         Category,
@@ -34,6 +42,13 @@ class Review(models.Model):
         Product,
         on_delete=models.CASCADE,
         related_name='reviews'
+    )
+    user = models.ForeignKey(
+        'user.Users',
+        on_delete=models.CASCADE,
+        related_name='reviews',
+        null=True,
+        blank=False
     )
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

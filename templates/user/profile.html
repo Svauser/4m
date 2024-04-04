@@ -1,0 +1,54 @@
+{% extends 'components/navbar.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1 class="text-center">Profile</h1>
+
+<div class="container">
+    <img src="/media/{{ user.avatar }}" alt="Profile Image" class="img-thumbnail">
+    <h1>{{ user.username }}</h1>
+    <p>{{ user.email }}</p>
+    <p>{{ user.first_name }}</p>
+    <p>{{ user.last_name }}</p>
+    <p>{{ user.date_joined }}</p>
+    <p>{{ user.age }}</p>
+    <p>{{ user.bio }}</p>
+
+    <!-- Logout Button -->
+    <div class="container">
+        <button class="btn btn-danger">
+            <a href="/auth/logout/" style="color: white;">Logout</a>
+        </button>
+    </div>
+
+    <h1>
+        Products:
+    </h1>
+
+    {% for product in user.products.all %}
+        <div class="card" style="width: 18rem;">
+            {% if product.image %}
+                <img src="/media/{{ product.image }}" class="card-img-top" alt="...">
+            {% else %}
+                <img src="{% static 'default.png' %}" class="card-img-top" alt="...">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }} {{ product.price }}</h5>
+                <p class="card-text">{{ product.description }}</p>
+                <!-- author -->
+                <p class="card-text">Author: {{ product.user }}</p>
+                {% for tag in product.tags.all %}
+                    <a href="#" class="btn btn-secondary">{{ tag.name }}</a>
+                {% endfor %}
+                <a href="/products/{{ product.id }}" class="btn btn-primary">Read more...</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+
+
+{% endblock %}
