@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 
-from user.forms import RegisterForm, LoginForm
+from user.forms import RegisterForm, LoginForm, ProfileForm
 from user.models import Users
 
 
@@ -67,3 +67,18 @@ def logout_view(request):
 @login_required(login_url='/auth/login/')
 def profile_view(request):
     return render(request, 'user/profile.html')
+def profile_update_view(request):
+    user = request.user
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            password = form.cleaned_data.get('password')
+            if password:
+                user.set_password(password)
+                update_session_auth_hash(request, user)
+            user.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=user)
+    return render(request, 'user/profile_update.html', {'form': form})

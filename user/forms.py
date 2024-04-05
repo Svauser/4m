@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from user.models import Users
 
 
 class RegisterForm(forms.Form):
@@ -136,3 +137,17 @@ class LoginForm(forms.Form):
             }
         )
     )
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Users
+        fields = ['username', 'email', 'first_name', 'last_name', 'age', 'bio', 'avatar','password']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите логин'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Введите пароль'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Введите email'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите имя'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите фамилию'}),
+            'age': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Введите возраст'}),
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Расскажите о себе'}),
+            'avatar': forms.ClearableFileInput(attrs={'class': 'form-control-file'})
+        }

@@ -3,6 +3,43 @@
 
 {% block content %}
 <h1>Products</h1>
+<!-- search -->
+<form method="GET" action="">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Поиск постов" name="search" value="{{ request.GET.search }}">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Поиск</button>
+        </div>
+    </div>
+</form>
+
+<!-- Tags -->
+<div class="btn-group" role="group" aria-label="Basic example">
+    <a href="/products/" class="btn btn-secondary">Все</a>
+    {% for tag in tags %}
+        <a href="?tag={{ tag.id }}" class="btn btn-secondary">{{ tag.name }}</a>
+    {% endfor %}
+</div>
+
+
+<!-- Sort by -->
+<form method="GET" action="">
+    <div class="input-group mb-3">
+        <select class="custom-select" name="sort">
+            <option value="created_at">По дате</option>
+            <option value="-created_at">По дате (обратно)</option> <!-- "-" - reverse order -->
+            <option value="price">По цене</option>
+            <option value="-price">По цене (обратно)</option>
+            <option value="name">По названию</option>
+            <option value="-name">По названию (обратно)</option>
+        </select>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Сортировать</button>
+        </div>
+    </div>
+</form>
+<div style="display: flex; flex-wrap: wrap;">
+
 {% for product in products %}
     {% if product.user != request.user %}
     <div class="card" style="width: 18rem;">
@@ -24,4 +61,5 @@
     </div>
     {% endif %}
 {% endfor %}
-{% endblock %}
+</div>
+{%endblock%}

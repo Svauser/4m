@@ -14,6 +14,14 @@
 {%for tag in product.tags.all%}
 <p>{{tag.name}}</p>
 {%endfor%}
+{% if product.user == user %}
+    <button>
+        <a href="{% url 'product_edit' product_id=product.id %}">Update Product</a>
+    </button>
+    <button>
+        <a href="{% url 'product_delete' product_id=product.id %}">Delete Product</a>
+    </button>
+{% endif %}
 <h1>Reviews</h1>
 {%for review in product.reviews.all%}
 <p>Author: {{ review.user }}</p>
